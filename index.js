@@ -22,13 +22,13 @@ const getLocalIP = () => {
 
 // Scan network using arp-scan or ping sweep (Linux/macOS)
 const scanNetwork = (callback) => {
-    exec("arp -a", (err, stdout) => {
+    exec("nmap -sn 10.204.39.0/24", (err, stdout) => {
         if (err) return callback([]);
-        const devices = stdout.split('\n')
-            .filter(line => line.includes('.'))
+        const devices = stdout.split("\n")
+            .filter(line => line.includes("Nmap scan report for"))
             .map(line => {
-                const parts = line.split(' ');
-                return { ip: parts[1].replace(/[()]/g, ''), mac: parts[3] || 'Unknown' };
+                const ip = line.split(" ")[4];
+                return { ip, mac: "Unknown" };
             });
         callback(devices);
     });
@@ -47,8 +47,12 @@ app.get('/', (req, res) => {
                         <td><input type='checkbox' name='allow_${device.ip}' checked></td>
                      </tr>`;
         });
-        html += `</table><br><button type='submit'>Update</button></form>`;
-        res.send(html);
+       html += `<tr>
+            <td>${device.ip}</td>
+            <td>${device.mac}</td>
+            <td><input type='checkbox' name='allow_${device.ip}' value='yes'></td>
+         </tr>`;
+
     });
 });
 
