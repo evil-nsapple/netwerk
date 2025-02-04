@@ -1,0 +1,15 @@
+{
+  "name": "network-scanner",
+  "version": "1.0.0",
+  "description": "A simple network scanner with web UI",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "node-arp": "^1.0.0"
+  },
+  "author": "Your Name",
+  "license": "MIT"
+}
