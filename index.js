@@ -5,6 +5,8 @@ const arp = require('node-arp');
 const app = express();
 const port = 3000;
 
+app.use(express.urlencoded({ extended: true })); // Middleware to parse form data
+
 // Get local IP
 const getLocalIP = () => {
     const interfaces = os.networkInterfaces();
@@ -48,6 +50,11 @@ app.get('/', (req, res) => {
         html += `</table><br><button type='submit'>Update</button></form>`;
         res.send(html);
     });
+});
+
+app.post('/update', (req, res) => {
+    console.log('Received form data:', req.body); // Debugging
+    res.send('<h2>Settings updated successfully!</h2><a href="/">Go Back</a>');
 });
 
 app.listen(port, () => {
